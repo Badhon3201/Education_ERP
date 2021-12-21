@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:student_management_system/feature_app/dashboard/view/dashboard_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -203,6 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       width: 10,
                     ),
+                    //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
                     Text(
                       'Remember Me',
                       style: TextStyle(color: Colors.grey),
@@ -228,7 +230,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   textStyle: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  print('sdsd');
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DashboardPage()));
+                },
                 child: const Text('Login'),
               ),
             ),

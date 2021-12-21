@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'feature_app/Auth/view/login_screen.dart';
+import 'feature_app/dashboard/view/dashboard_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -96,7 +97,7 @@ class SplashScreens extends StatelessWidget {
           child: InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
+                    MaterialPageRoute(builder: (context) => DashboardPage()));
               },
               child: Text('Login'))),
     );
