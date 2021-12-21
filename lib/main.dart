@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:student_management_system/feature_app/Auth/view_model/sign_in_view_model.dart';
+import 'package:student_management_system/feature_app/splash_screen.dart';
 
 import 'feature_app/Auth/view/login_screen.dart';
 import 'feature_app/dashboard/view/dashboard_page.dart';
@@ -12,23 +15,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // navigatorKey: appNavigator.navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      // builder: BotToastInit(),
-      // navigatorObservers: [BotToastNavigatorObserver()],
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SignInViewModel()),
+      ],
+      child: MaterialApp(
+        // navigatorKey: appNavigator.navigatorKey,
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        // builder: BotToastInit(),
+        // navigatorObservers: [BotToastNavigatorObserver()],
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: SplashScreens(),
       ),
-      // home: DashboardScreen(),
-      home: SplashScreens(),
-      // home: NewsScreen(),
-      // routes: {
-      //   DetailsPage.routeName: (context)=>DetailsPage(),
-      //   CartScreen.routeName: (context)=>CartScreen(),
-      // },
     );
     // return AuthViewWrapper(
     //   child: MultiProvider(
@@ -84,22 +86,5 @@ class MyApp extends StatelessWidget {
     //     ),
     //   ),
     // );
-  }
-}
-
-class SplashScreens extends StatelessWidget {
-  const SplashScreens({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DashboardPage()));
-              },
-              child: Text('Login'))),
-    );
   }
 }
