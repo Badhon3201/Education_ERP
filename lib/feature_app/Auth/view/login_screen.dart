@@ -3,8 +3,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';
 import 'package:student_management_system/feature_app/Auth/repository/login_repository.dart';
+import 'package:student_management_system/feature_app/Auth/view_model/access_token_view_model.dart';
 import 'package:student_management_system/feature_app/Auth/view_model/sign_in_view_model.dart';
-import 'package:student_management_system/feature_app/dashboard/view/dashboard_page.dart';
+import 'package:student_management_system/feature_app/student/dashboard/view/dashboard_page.dart';
+import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view/teacher_dashboard_screen.dart';
+
+import 'package:student_management_system/main_app/app_navigator.dart';
 import 'package:student_management_system/main_app/validator.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -191,6 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.always,
                 controller: passwordController,
+                obscureText: true,
                 // validator: (value) =>
                 //     value!.isEmpty ? 'Password field is required' : null,
                 decoration: const InputDecoration(
@@ -261,11 +266,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     if (vm.accessToken != null) {
                       isValidte = true;
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => DashboardPage(),
-                          ),
-                          (Route<dynamic> route) => false);
+                      appNavigator
+                          .getProvider<AccessTokenProvider>()
+                          .setToken(vm.accessToken!);
+                      if (vm.groupName == "Student") {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  DashboardPage(),
+                            ),
+                            (Route<dynamic> route) => false);
+                      } else {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  TeacherDashboardScreen(),
+                            ),
+                            (Route<dynamic> route) => false);
+                      }
                     } else {
                       setState(() {
                         isValidte = false;

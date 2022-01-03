@@ -3,6 +3,7 @@ import 'package:student_management_system/feature_app/Auth/repository/login_repo
 
 class SignInViewModel with ChangeNotifier {
   String? _accessToken;
+  String? _groupName;
   String? _refreshToken;
   bool _isLoading = false;
 
@@ -18,10 +19,12 @@ class SignInViewModel with ChangeNotifier {
     }, (r) {
       _isLoading = false;
       _accessToken = r.token;
+      _groupName = r.userGroup;
     });
   }
 
   String? get accessToken => _accessToken;
+  String? get groupName => _groupName;
   String? get refreshToken => _refreshToken;
   bool get isLoading => _isLoading;
 }

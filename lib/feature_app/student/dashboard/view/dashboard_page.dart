@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:student_management_system/feature_app/profile/repository/student_profile_repository.dart';
-import 'package:student_management_system/feature_app/profile/view/attendance_page.dart';
-import 'package:student_management_system/feature_app/profile/view/fees_page.dart';
-import 'package:student_management_system/feature_app/profile/view/profile_page.dart';
-import 'package:student_management_system/feature_app/profile/view/routine_page.dart';
+import 'package:provider/provider.dart';
+import 'package:student_management_system/feature_app/Auth/view_model/access_token_view_model.dart';
+import 'package:student_management_system/feature_app/student/profile/view/attendance_page.dart';
+import 'package:student_management_system/feature_app/student/profile/view/fees_page.dart';
+import 'package:student_management_system/feature_app/student/profile/view/profile_page.dart';
+import 'package:student_management_system/feature_app/student/profile/view/routine_page.dart';
+import 'package:student_management_system/feature_app/student/profile/view_model/profile_get_all_data_view_model.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -55,7 +57,11 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     // TODO: implement initState
-    StudentProfileRepository().fetchProfile();
+    Future.delayed(Duration.zero, () async {
+      await Provider.of<AccessTokenProvider>(context, listen: false).getToken();
+      await Provider.of<StudentProfileDataViewModel>(context, listen: false)
+          .getProfileData();
+    });
     super.initState();
   }
 

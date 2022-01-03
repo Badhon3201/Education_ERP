@@ -4,10 +4,16 @@ import 'package:student_management_system/feature_app/Auth/view_model/sign_in_vi
 import 'package:student_management_system/feature_app/splash_screen.dart';
 
 import 'feature_app/Auth/view/login_screen.dart';
-import 'feature_app/dashboard/view/dashboard_page.dart';
+import 'feature_app/Auth/view_model/access_token_view_model.dart';
+
+import 'feature_app/student/profile/view_model/fees_list_view_model.dart';
+import 'feature_app/student/profile/view_model/profile_get_all_data_view_model.dart';
+import 'feature_app/teacher/teacher_dashboard/view_model/student_list_view_model.dart';
+import 'main_app/app_navigator.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => AccessTokenProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,21 +21,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => SignInViewModel()),
-      ],
-      child: MaterialApp(
-        // navigatorKey: appNavigator.navigatorKey,
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        // builder: BotToastInit(),
-        // navigatorObservers: [BotToastNavigatorObserver()],
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+    return AuthViewWrapper(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => SignInViewModel()),
+          ChangeNotifierProvider(
+              create: (context) => StudentProfileDataViewModel()),
+          ChangeNotifierProvider(create: (context) => StudentFeesViewModel()),
+          ChangeNotifierProvider(create: (context) => StudentListViewModel()),
+        ],
+        child: MaterialApp(
+          navigatorKey: appNavigator.navigatorKey,
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          // builder: BotToastInit(),
+          // navigatorObservers: [BotToastNavigatorObserver()],
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: const SplashScreens(),
         ),
-        home: SplashScreens(),
       ),
     );
     // return AuthViewWrapper(

@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_management_system/feature_app/Auth/view/login_screen.dart';
-import 'package:student_management_system/feature_app/dashboard/view/dashboard_page.dart';
+import 'package:student_management_system/main_app/app_navigator.dart';
+
+import 'Auth/view_model/access_token_view_model.dart';
 
 class SplashScreens extends StatefulWidget {
   const SplashScreens({Key? key}) : super(key: key);
@@ -20,13 +23,15 @@ class _SplashScreensState extends State<SplashScreens> {
   }
 
   _loadWidget() async {
-    var _duration = Duration(seconds: 3);
+    var _duration = const Duration(seconds: 3);
     return Timer(_duration, navigationPage);
   }
 
   void navigationPage() {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => const LoginScreen()));
   }
 
   @override
