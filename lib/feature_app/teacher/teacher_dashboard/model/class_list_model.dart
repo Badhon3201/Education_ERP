@@ -1,27 +1,32 @@
+// To parse this JSON data, do
+//
+//     final classListModel = classListModelFromJson(jsonString);
+
 import 'dart:convert';
 
-ClassListModel feesModelFromJson(String str) =>
-    ClassListModel.fromJson(json.decode(str));
+List<ClassListModel> classListModelFromJson(String str) =>
+    List<ClassListModel>.from(
+        json.decode(str).map((x) => ClassListModel.fromJson(x)));
 
-String feesModelToJson(ClassListModel data) => json.encode(data.toJson());
+String classListModelToJson(List<ClassListModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ClassListModel {
   ClassListModel({
-    this.classes,
+    this.id,
+    this.name,
   });
 
-  Map<String, String>? classes;
+  int? id;
+  String? name;
 
   factory ClassListModel.fromJson(Map<String, dynamic> json) => ClassListModel(
-        classes: json["classes"] == null
-            ? null
-            : Map.from(json["classes"])
-                .map((k, v) => MapEntry<String, String>(k, v)),
+        id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
       );
 
   Map<String, dynamic> toJson() => {
-        "classes": classes == null
-            ? null
-            : Map.from(classes!).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        "id": id == null ? null : id,
+        "name": name == null ? null : name,
       };
 }

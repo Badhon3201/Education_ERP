@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:provider/provider.dart';
+import 'package:student_management_system/feature_app/teacher/teacher_dashboard/model/student_list_model.dart';
 import 'package:student_management_system/feature_app/teacher/teacher_dashboard/repository/class_list_repository.dart';
 import 'package:student_management_system/feature_app/teacher/teacher_dashboard/repository/student_search_repository.dart';
 import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view/student_list.dart';
+import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view_model/class_list_viwe_model.dart';
+import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view_model/student_list_view_model.dart';
 
 class StudentSearchScreen extends StatefulWidget {
   const StudentSearchScreen({Key? key}) : super(key: key);
@@ -12,13 +16,20 @@ class StudentSearchScreen extends StatefulWidget {
 }
 
 class _StudentSearchScreenState extends State<StudentSearchScreen> {
-  String? classValue = '1';
-  String? secValue = '1';
-  String? groupValue = '1';
+  String? classValue;
+  String? secValue;
+  String? groupValue;
+  bool classes = false;
   @override
   void initState() {
     // TODO: implement initState
     ClassListRepository().fetchClasses();
+    var CVM = Provider.of<ClassListViewModel>(context, listen: false);
+    Future.delayed(Duration.zero, () async {
+      await CVM.getClassestData();
+      await CVM.getSectionData();
+      await CVM.getGroupData();
+    });
     super.initState();
   }
 
@@ -46,6 +57,7 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
     ClassList(name: 'F', id: 6),
   ];
   Widget build(BuildContext context) {
+    var CVM = Provider.of<ClassListViewModel>(context, listen: true);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -76,11 +88,20 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
                     height: 45,
                     padding: EdgeInsets.only(left: 20, right: 20),
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black38)),
+                        border: Border.all(
+                            color:
+                                classes == true ? Colors.red : Colors.black38)),
                     child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                             value: classValue,
                             icon: const Icon(Icons.arrow_downward),
+                            hint: Text(
+                              'Select Class',
+                              style: TextStyle(
+                                fontSize: width <= 330 ? 10 : 12,
+                                color: Colors.grey,
+                              ),
+                            ),
                             elevation: 16,
                             style: const TextStyle(color: Colors.deepPurple),
                             isExpanded: true,
@@ -90,7 +111,7 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
                                 print(newValue);
                               });
                             },
-                            items: classList
+                            items: CVM.classList
                                 .map((e) => DropdownMenuItem<String>(
                                       value: e.id.toString(),
                                       child: Row(
@@ -98,6 +119,23 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
                                       ),
                                     ))
                                 .toList()))),
+                classes == true
+                    ? Column(
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 2, top: 3),
+                                child: Text(
+                                  'Class is required',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
                 const SizedBox(
                   height: 15,
                 ),
@@ -109,6 +147,13 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
                     child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                             value: secValue,
+                            hint: Text(
+                              'Select Section',
+                              style: TextStyle(
+                                fontSize: width <= 330 ? 10 : 12,
+                                color: Colors.grey,
+                              ),
+                            ),
                             icon: const Icon(Icons.arrow_downward),
                             elevation: 16,
                             style: const TextStyle(color: Colors.deepPurple),
@@ -119,7 +164,7 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
                                 print(newValue);
                               });
                             },
-                            items: sectionList
+                            items: CVM.sectionList
                                 .map((e) => DropdownMenuItem<String>(
                                       value: e.id.toString(),
                                       child: Row(
@@ -138,6 +183,13 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
                     child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                             value: groupValue,
+                            hint: Text(
+                              'Select Group',
+                              style: TextStyle(
+                                fontSize: width <= 330 ? 10 : 12,
+                                color: Colors.grey,
+                              ),
+                            ),
                             icon: const Icon(Icons.arrow_downward),
                             elevation: 16,
                             style: const TextStyle(color: Colors.deepPurple),
@@ -148,7 +200,7 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
                                 print(groupValue);
                               });
                             },
-                            items: groupList
+                            items: CVM.groupList
                                 .map((e) => DropdownMenuItem<String>(
                                       value: e.id.toString(),
                                       child: Row(
@@ -171,14 +223,26 @@ class _StudentSearchScreenState extends State<StudentSearchScreen> {
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () async {
-                  await StudentListRepository().fetchData(
-                      classes: classValue,
-                      section: secValue,
-                      group: groupValue);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => StudentListScreen()));
+                  if (classValue == null) {
+                    classes = true;
+                    setState(() {});
+                  } else {
+                    var stuVM = Provider.of<StudentListViewModel>(context,
+                        listen: false);
+                    await stuVM.getStudentData(
+                        classes: classValue,
+                        section: secValue == null ? "" : secValue,
+                        group: groupValue == null ? "" : groupValue);
+                    // if (abcd.statusCode == 200) {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StudentListScreen()))
+                        .then((value) {
+                      classes = false;
+                      setState(() {});
+                    });
+                  }
                 },
                 child: const Text('Search'),
               ),

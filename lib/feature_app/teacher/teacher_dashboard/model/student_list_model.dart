@@ -22,7 +22,7 @@ class StudentListModel {
 
   int? id;
   String? name;
-  Class? studentListModelClass;
+  String? studentListModelClass;
   Section? section;
   int? roll;
 
@@ -30,8 +30,7 @@ class StudentListModel {
       StudentListModel(
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
-        studentListModelClass:
-            json["class"] == null ? null : classValues.map[json["class"]],
+        studentListModelClass: json["class"] == null ? null : json["class"],
         section:
             json["section"] == null ? null : sectionValues.map[json["section"]],
         roll: json["roll"] == null ? null : json["roll"],
@@ -40,9 +39,7 @@ class StudentListModel {
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "name": name == null ? null : name,
-        "class": studentListModelClass == null
-            ? null
-            : classValues.reverse![studentListModelClass],
+        "class": studentListModelClass == null ? null : studentListModelClass,
         "section": section == null ? null : sectionValues.reverse![section],
         "roll": roll == null ? null : roll,
       };

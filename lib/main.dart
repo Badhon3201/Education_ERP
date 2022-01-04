@@ -8,6 +8,7 @@ import 'feature_app/Auth/view_model/access_token_view_model.dart';
 
 import 'feature_app/student/profile/view_model/fees_list_view_model.dart';
 import 'feature_app/student/profile/view_model/profile_get_all_data_view_model.dart';
+import 'feature_app/teacher/teacher_dashboard/view_model/class_list_viwe_model.dart';
 import 'feature_app/teacher/teacher_dashboard/view_model/student_list_view_model.dart';
 import 'main_app/app_navigator.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
               create: (context) => StudentProfileDataViewModel()),
           ChangeNotifierProvider(create: (context) => StudentFeesViewModel()),
           ChangeNotifierProvider(create: (context) => StudentListViewModel()),
+          ChangeNotifierProvider(create: (context) => ClassListViewModel()),
         ],
         child: MaterialApp(
           navigatorKey: appNavigator.navigatorKey,

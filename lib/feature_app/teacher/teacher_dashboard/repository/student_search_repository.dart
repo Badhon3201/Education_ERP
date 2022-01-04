@@ -9,6 +9,7 @@ import '../../../app_error.dart';
 
 class StudentListRepository {
   String? msg;
+  int? statusCode;
   Future<Either<AppError, List<StudentListModel>>> fetchData(
       {String? classes, String? section, String? group}) async {
     // BotToast.showLoading();
@@ -25,6 +26,7 @@ class StudentListRepository {
     });
     debugPrint(response.body);
     print("body1$body1");
+    statusCode = response.statusCode;
     var decodedJson = json.decode(response.body);
     if (response.statusCode == 200) {
       // BotToast.closeAllLoading();

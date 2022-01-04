@@ -7,18 +7,24 @@ class StudentListViewModel extends ChangeNotifier {
   bool _isLoading = false;
   AppError? _appError;
   List<StudentListModel> _studentList = [];
-  Future getProfileData() async {
+  String? statusCode;
+  Future getStudentData(
+      {String? classes, String? section, String? group}) async {
     _isLoading = true;
-    var res = await StudentListRepository().fetchData();
+    var res = await StudentListRepository()
+        .fetchData(classes: classes, section: section, group: group);
 
     notifyListeners();
     res.fold((l) {
+      print('dddd');
       _appError = l;
       _isLoading = false;
       notifyListeners();
     }, (r) {
+      print("sss");
       _isLoading = false;
       _studentList = r;
+      print('gtgt$_studentList');
       notifyListeners();
     });
   }

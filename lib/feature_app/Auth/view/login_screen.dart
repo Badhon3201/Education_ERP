@@ -171,8 +171,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 autovalidateMode: AutovalidateMode.always,
                 controller: usernameController,
                 decoration: const InputDecoration(
-                    hintText: 'Email',
-                    labelText: 'Email *',
+                    hintText: 'Username',
+                    labelText: 'Username *',
                     focusColor: Colors.grey,
                     labelStyle: TextStyle(color: Colors.deepPurple),
                     focusedBorder: OutlineInputBorder(
@@ -189,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     )),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             SizedBox(
               height: 50,
               child: TextFormField(
@@ -258,7 +258,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () async {
-                  print('sdsd');
                   if (_formKey.currentState!.validate()) {
                     await vm.getSignInData(
                         username: usernameController.text,

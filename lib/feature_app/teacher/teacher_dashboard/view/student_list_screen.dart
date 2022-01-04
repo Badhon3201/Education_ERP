@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
+import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view_model/student_list_view_model.dart';
 
 class StudentListScreen extends StatefulWidget {
   const StudentListScreen({Key? key}) : super(key: key);
@@ -11,8 +13,20 @@ class StudentListScreen extends StatefulWidget {
 
 class _StudentListScreenState extends State<StudentListScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    Future.delayed(Duration.zero, () async {
+      // await Provider.of<StudentListViewModel>(context, listen: false)
+      //     .getStudentData();
+      print(
+          "Akram${Provider.of<StudentListViewModel>(context, listen: false).studentList.length}");
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var studenVM = Provider.of<StudentListViewModel>(context, listen: true);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -23,7 +37,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
       body: ListView.builder(
         shrinkWrap: true,
         // physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: 10,
+        itemCount: studenVM.studentList.length,
         itemBuilder: (context, int index) {
           return Container(
             decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
@@ -47,13 +61,13 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text('Avery Khan'),
+                      children: [
+                        Text('${studenVM.studentList[index].name}'),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
-                          'Class : One | Section : A |',
+                          'Class : ${studenVM.studentList[index].studentListModelClass} | Section : ${studenVM.studentList[index].section} |',
                           style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                       ],
