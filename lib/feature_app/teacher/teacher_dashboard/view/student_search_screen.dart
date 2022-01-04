@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:provider/provider.dart';
-import 'package:student_management_system/feature_app/teacher/teacher_dashboard/model/student_list_model.dart';
 import 'package:student_management_system/feature_app/teacher/teacher_dashboard/repository/class_list_repository.dart';
-import 'package:student_management_system/feature_app/teacher/teacher_dashboard/repository/student_search_repository.dart';
-import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view/student_list.dart';
+import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view/student_list_screen.dart';
 import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view_model/class_list_viwe_model.dart';
 import 'package:student_management_system/feature_app/teacher/teacher_dashboard/view_model/student_list_view_model.dart';
 
